@@ -1,0 +1,112 @@
+<!-- 
+Simple webpage copy protection by hlorand
+- diables selection
+- disables right click
+- prevents PrintScreening the page
+- if page saved offline, hides body (uncomment to use it, and specify a domain) or shuffles characters
+
+This code achieves above things using JavaScript. The content you want to protect
+is located in the source code and a qualified programmer can easily extract it.
+To make his work harder, a better solution is to dynamically download content
+from server (only for logged in users) at webpage load, using Ajax. Using 
+this solution the content will be located in the DOM, not in the actual source code.
+This time saving the web page only saves the source code and viewing the protected
+content is possible only for logged in users:
+
+<div id="content"></div>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $("#content").load("GetTheContent.php");	    
+	});
+</script>
+
+More info: https://www.w3schools.com/jquery/jquery_ajax_load.asp
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Simple webpage copy protection</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<style>
+	/* Disable selection */
+	#protect{
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-o-user-select: none;
+		user-select: none;
+	}
+	</style>
+
+</head>
+<body>
+	<p id="protect" unselectable="on" onmousedown="return false;" onselectstart="return false;" 
+	   oncopy="return false;" onpaste="return false;" oncut="return false;">
+		
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	
+	</p>
+
+	<script type="text/javascript"> 
+	//if page saved offline
+	if(location.host != 'example.com'){ 
+		//hide content - UNCOMMENT TO USE and specify a domain in the above line
+		//$("body").hide(); 
+		
+		//or shuffle characters
+		var p = document.getElementById("protect");
+		var p_shuffled = p.innerHTML.split('').sort(function(){return 0.5-Math.random()}).join('');
+		p.innerHTML = p_shuffled;
+	}
+
+	//Disable right click
+	document.addEventListener('contextmenu', event => event.preventDefault());
+
+	//PrintScreen protection - showing alert message and overwrite clipboard with text
+	$(document).ready(function() {
+		
+		//creates an input, copies message from it to clipboard, and deletes input
+		function copyToClipboard() {
+			var aux = document.createElement("input");
+			aux.setAttribute("value", "Copyright example.com");
+			document.body.appendChild(aux);
+			aux.select();
+			document.execCommand("copy");
+			document.body.removeChild(aux);
+			alert("Please don't copy website content.");
+		}
+
+		$(window).keyup(function(e){
+			console.log(e.keyCode);
+			//printscreen windows and osx keycode
+			if(e.keyCode == 44 || e.keyCode == 124){
+				copyToClipboard();
+				return false;
+			}
+		});
+
+		//Extra protection: if window is not in focus hide content to prevent printscreen - UNCOMMENT TO USE
+		/*
+			$(window).focus(function() {
+			  $("body").show();
+			}).blur(function() {
+			  $("body").hide();
+			});
+		*/
+	});
+	</script>
+</body>
+</html>
+
+ 

