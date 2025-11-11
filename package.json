@@ -1,0 +1,7 @@
+{
+  "name": "global-js-app",
+  "version": "1.0.0", 
+  "bin": {
+    "run-global": "./global-app.js"
+  }
+}
